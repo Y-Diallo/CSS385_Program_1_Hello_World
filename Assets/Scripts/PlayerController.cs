@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,9 +10,12 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed = 8;
     private float gravity = 9.8f;
     private float currentVerticalSpeed = 0;
+    private int score = 0;
+    public TextMeshProUGUI countText;
     // Start is called before the first frame update
     void Start()
     {
+        SetCountText();
         characterController = GetComponent<CharacterController>() ; 
     }
 
@@ -34,5 +38,15 @@ public class PlayerController : MonoBehaviour
         Vector3 move = transform.forward * verticalInput + transform.right * horizontalInput;
         move.y = currentVerticalSpeed;
         characterController.Move(speed*Time.deltaTime * move);
+    }
+    void OnTriggerEnter(Collider other) {
+        if (other.gameObject.CompareTag("PickUp")) {
+            other.gameObject.SetActive(false);
+            score++;
+            SetCountText();
+        }
+    }
+    void SetCountText() {
+        countText.text =  "Score: " + score.ToString();
     }
 }
