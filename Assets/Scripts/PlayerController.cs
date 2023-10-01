@@ -12,10 +12,12 @@ public class PlayerController : MonoBehaviour
     private float currentVerticalSpeed = 0;
     private int score = 0;
     public TextMeshProUGUI countText;
+    public GameObject winTextObject;
     // Start is called before the first frame update
     void Start()
     {
         SetCountText();
+        winTextObject.SetActive(false);
         characterController = GetComponent<CharacterController>() ; 
     }
 
@@ -48,5 +50,12 @@ public class PlayerController : MonoBehaviour
     }
     void SetCountText() {
         countText.text =  "Score: " + score.ToString();
+        GameObject[] gameObjects;
+        gameObjects = GameObject.FindGameObjectsWithTag("PickUp");
+
+        if (gameObjects.Length == 0)
+        {
+            winTextObject.SetActive(true);
+        }
     }
 }
